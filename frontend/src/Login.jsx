@@ -24,8 +24,6 @@ const Login = () => {
     console.log('🚀🚀🚀🚀 isSignInMode--->> ', isSignInMode);
     const urlPath = isSignInMode ? 'signup' : 'login';
     setIsSignInMode(false);
-    console.log('🚀🚀🚀🚀 data.username--->> ', data.username);
-    console.log('🚀🚀🚀🚀 data.password--->> ', data.password);
     const loginUser = {
       username: data.username,
       password: data.password,

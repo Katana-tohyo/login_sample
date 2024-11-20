@@ -6,6 +6,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
 const userController = require('./user/user.controller');
+const userModel = require('./user/user.model')
 
 // const url =
 //   process.env.NODE_ENV === undefined
@@ -42,7 +43,8 @@ function setupServer() {
     // LocalStrategy(ユーザー名・パスワードでの認証)の設定
     passport.use(
       new LocalStrategy(async (username, password, done) => {
-          const user = userDB.find((user) => user.username === username);
+          const user = userModel.find(username)
+          // const user = userDB.find((user) => user.username === username);
 
           if (!user) {
               // ユーザーが見つからない場合

@@ -7,5 +7,4 @@ const knexConfig =
         ? config["production"]
         : config["development"];
 
-console.log("knexConfig",knexConfig)
 module.exports = knex(knexConfig);

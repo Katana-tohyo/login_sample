@@ -1,7 +1,7 @@
 const db = require('../knex');
 const crypto = require('crypto');
 
-const USER_LIST_TABLE = 'user_list';
+const USER_LIST_TABLE = 'user_table';
 
 function createSalt() {
   // salt 作成
@@ -40,6 +40,7 @@ module.exports = {
         username,
         salt,
         hashed_password: hashedPassword,
+        session_id:"temp1" //  🤡🤡🤡🤡🤡🤡 変更の必要あり
       })
       .returning('username');
     return newUsername;

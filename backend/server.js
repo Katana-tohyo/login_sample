@@ -7,10 +7,10 @@ const bcrypt = require('bcrypt');
 
 const userController = require('./user/user.controller');
 
-const url =
-  process.env.NODE_ENV === undefined
-    ? 'http://localhost:5173'
-    : 'https://my-typing-dojo.onrender.com/';
+// const url =
+//   process.env.NODE_ENV === undefined
+//     ? 'http://localhost:5173'
+//     : 'https://my-typing-dojo.onrender.com/';
 
 // 🚨 DBに格納するユーザーデータ
 const userDB = [
@@ -22,7 +22,7 @@ function setupServer() {
     app.use(express.json());
 
     // アプリ起動時の参照先
-    app.use(express.static(__dirname + '/public'));
+    // app.use(express.static(__dirname + '/public'));
 
     app.use(
       cors({
@@ -79,7 +79,7 @@ function setupServer() {
     // ログインエンドポイント
     // 🚨🚨🚨 作業中 🚨🚨🚨 ===========================================
     app.post('/login', (req, res) => {
-        const { username, password } = req.query;
+        const { username, password } = req.body.text;
         if (!username || !password) {
             return res.status(400).json({
                 message: 'usernameとpasswordが必要です',

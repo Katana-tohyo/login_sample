@@ -1,7 +1,9 @@
 import './App.css';
+import { Button, HStack } from '@chakra-ui/react';
+import Login from './Login.jsx';
 
 function App() {
-  return <div>hello!</div>;
+  return <Login />;
 }
 
 export default App;

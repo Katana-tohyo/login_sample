@@ -1,22 +1,8 @@
 const db = require('../knex');
 const crypto = require('crypto');
+const bcrypt = require("bcrypt");
 
 const USER_LIST_TABLE = 'user_table';
-
-function createSalt() {
-  // salt 作成
-  return crypto.randomBytes(6).toString('hex');
-}
-
-function createHash(salt, password) {
-  // saltをpasswordに付け加える
-  const saltAndPassword = `${salt}${password}`;
-  // sha256 を使ってハッシュオブジェクトを作る
-  const hash = crypto.createHash('sha256');
-  // ハッシュ化したパスワードを取り出し
-  const hashedPassword = hash.update(saltAndPassword).digest('hex');
-  return { salt, hashedPassword };
-}
 
 function checkPassWord(username, password) {}
 
@@ -33,13 +19,11 @@ module.exports = {
   },
 
   async signup(username, password) {
-    const salt = createSalt();
-    const { hashedPassword } = createHash(salt, password);
     const [newUsername] = await db(USER_LIST_TABLE)
       .insert({
         username,
-        salt,
-        hashed_password: hashedPassword,
+        salt:"temp1", // 🤡🤡🤡🤡🤡🤡 bcrypt ではsalt列は不要なため、後で削除する
+        hashed_password: bcrypt.hashSync(password, 10),
         session_id:"temp1" //  🤡🤡🤡🤡🤡🤡 変更の必要あり
       })
       .returning('username');

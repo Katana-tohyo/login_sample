@@ -43,16 +43,14 @@ function setupServer() {
   // LocalStrategy(ユーザー名・パスワードでの認証)の設定
   passport.use(
     new LocalStrategy(async (username, password, done) => {
-      console.log("🚀🚀🚀🚀 username--->> ", username);
-      const user = userModel.find(username);
-      // const user = userDB.find((user) => user.username === username);
+      const user = await userModel.find(username);
 
       if (!user) {
         // ユーザーが見つからない場合
         return done(null, false);
       }
       // ハッシュ化したPWの突き合わせ。入力されたpasswordから、DBに保存されたハッシュ値を比較する
-      const match = await bcrypt.compare(password, user.password);
+      const match = await bcrypt.compare(password, user.hashed_password);
       if (match) {
         return done(null, user); // ログイン成功
       } else {
@@ -62,10 +60,10 @@ function setupServer() {
   );
 
   // 認証に成功した時にsessionにusernameを保存するための記述
-  passport.serializeUser((user, done) => done(null, user.username));
+  passport.serializeUser((user, done) => done(null, user.hashed_password));
   // sessionからusernameを取り出して検証するための記述
-  passport.deserializeUser((username, done) => {
-    const user = userDB.find((user) => user.username === username);
+  passport.deserializeUser(async (username, done) => {
+    const user = await userModel.find(username);
     done(null, user);
   });
 
@@ -80,9 +78,8 @@ function setupServer() {
   });
 
   // ログインエンドポイント
-  // 🚨🚨🚨 作業中 🚨🚨🚨 ===========================================
   app.post("/login", (req, res) => {
-    const { username, password } = req.body.text;
+    const { username, password } = req.body;
     if (!username || !password) {
       return res.status(400).json({
         message: "usernameとpasswordが必要です",

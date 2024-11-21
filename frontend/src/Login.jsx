@@ -33,9 +33,7 @@ const Login = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        text: loginUser,
-      }),
+      body: JSON.stringify(loginUser),
     });
     response = await response.json();
     console.log('signup server response:  ', response);

@@ -8,22 +8,9 @@ const bcrypt = require("bcrypt");
 const userController = require("./user/user.controller");
 const userModel = require("./user/user.model");
 
-// const url =
-//   process.env.NODE_ENV === undefined
-//     ? 'http://localhost:5173'
-//     : 'https://my-typing-dojo.onrender.com/';
-
-// 🚨 DBに格納するユーザーデータ
-const userDB = [
-  { username: "test", salt: 10, password: bcrypt.hashSync("password", 10) },
-];
-
 function setupServer() {
   const app = express();
   app.use(express.json());
-
-  // アプリ起動時の参照先
-  // app.use(express.static(__dirname + '/public'));
 
   app.use(
     cors({
@@ -68,14 +55,14 @@ function setupServer() {
   });
 
   // ユーザー一覧取得エンドポイント
-  app.get("/users", (req, res) => {
-    // sessionから情報を取得して認証
-    if (req.isAuthenticated()) {
-      res.json(userDB);
-    } else {
-      res.status(401).json({ message: "ログインが必要です！" });
-    }
-  });
+  // app.get("/users", (req, res) => {
+  //   // sessionから情報を取得して認証
+  //   if (req.isAuthenticated()) {
+  //     res.json(userDB);
+  //   } else {
+  //     res.status(401).json({ message: "ログインが必要です！" });
+  //   }
+  // });
 
   // ログインエンドポイント
   app.post("/login", (req, res) => {

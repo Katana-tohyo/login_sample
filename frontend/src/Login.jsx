@@ -6,11 +6,6 @@ import { PasswordInput } from './components/ui/password-input';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
-// const urlDomain =
-//   process.env.NODE_ENV === 'production'
-//     ? 'https://my-typing-dojo.onrender.com/'
-//     : 'http://localhost:3000/';
-
 const Login = () => {
   const [isSignInMode, setIsSignInMode] = useState(false);
 
@@ -34,6 +29,7 @@ const Login = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(loginUser),
+      credentials: 'include', // クッキーを含める
     });
     response = await response.json();
     console.log('signup server response:  ', response);

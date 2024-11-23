@@ -22,10 +22,21 @@ function setupServer() {
 
   // 認証機能 ====================================================
   // セッション設定 express-session
-  app.use(session({ secret: "secretKey" }));
+  app.use(
+    session({
+      secret: "secretKey",
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
   // passport session
   app.use(passport.initialize());
   app.use(passport.session());
+
+  app.use((req, res, next) => {
+    console.log("セッション情報:", req.session);
+    next();
+  });
 
   // LocalStrategy(ユーザー名・パスワードでの認証)の設定
   passport.use(

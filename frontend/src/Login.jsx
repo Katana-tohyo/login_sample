@@ -56,9 +56,6 @@ const Login = () => {
 
   return (
     <VStack>
-      <Heading fontSize={'5xl'} mb={6}>
-        Tohyo
-      </Heading>
       <Flex gap="20" mt="5">
         <form onSubmit={onSubmit}>
           <VStack>

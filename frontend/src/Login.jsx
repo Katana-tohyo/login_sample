@@ -29,7 +29,7 @@ const Login = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(loginUser),
-      credentials: 'include', // クッキーを含める
+      credentials: 'include', // fetchの場合、クッキーを含めるにはこの設定が必要
     });
     response = await response.json();
     console.log('signup server response:  ', response);

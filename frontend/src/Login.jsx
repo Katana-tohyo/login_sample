@@ -17,7 +17,6 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log('🚀🚀🚀🚀 isSignInMode--->> ', isSignInMode);
     const urlPath = isSignInMode ? 'signup' : 'login';
     setIsSignInMode(false);
     const loginUser = {
@@ -25,28 +24,29 @@ const Login = () => {
       password: data.password,
     };
     // fetch version
-    // let response = await fetch(`http://localhost:3000/${urlPath}`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(loginUser),
-    //   credentials: 'include', // クッキーを含める
-    // });
-    // response = await response.json();
-
-    const response = await axios.post(
-      `http://localhost:3000/${urlPath}`,
-      loginUser,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          withCredentials: true,
-        },
-      }
-    );
-    console.log('signup server response:  ', response.data);
+    let response = await fetch(`http://localhost:3000/${urlPath}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(loginUser),
+      credentials: 'include', // クッキーを含める
+    });
+    response = await response.json();
   });
+
+  //   const response = await axios.post(
+  //     `http://localhost:3000/${urlPath}`,
+  //     loginUser,
+  //     {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         withCredentials: true,
+  //       },
+  //     }
+  //   );
+  //   console.log('signup server response:  ', response.data);
+  // });
 
   function handleSignInClick() {
     setIsSignInMode(true);

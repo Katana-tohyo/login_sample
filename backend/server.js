@@ -49,9 +49,9 @@ function setupServer() {
         return done(null, false);
       }
       // ハッシュ化したPWの突き合わせ。入力されたpasswordから、DBに保存されたハッシュ値を比較する
-      const match = await bcrypt.compare(password, user.username);
+      const match = await bcrypt.compare(password, user.hashed_password);
       if (match) {
-        return done(null, user); // ログイン成功
+        return done(null, user.username); // ログイン成功
       } else {
         return done(null, false); // ログイン失敗
       }
@@ -86,12 +86,12 @@ function setupServer() {
     }
 
     // 最初に設定したLocalStrategy(ユーザー名とパスワードでの認証)を使ってログイン
-    passport.authenticate("local", (err, user) => {
-      if (!user) return res.status(401).json({ message: "ログイン失敗！" });
+    passport.authenticate("local", (err, username) => {
+      if (!username) return res.status(401).json({ message: "ログイン失敗！" });
 
       // sessionにログイン情報を格納
-      req.logIn(user, () => {
-        return res.json({ message: `ログイン成功！ Hello, ${user.username}` });
+      req.logIn(username, () => {
+        return res.json({ message: `ログイン成功！ Hello, ${username}` });
       });
     })(req, res);
   });

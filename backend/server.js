@@ -49,7 +49,7 @@ function setupServer() {
         return done(null, false);
       }
       // ハッシュ化したPWの突き合わせ。入力されたpasswordから、DBに保存されたハッシュ値を比較する
-      const match = await bcrypt.compare(password, user.hashed_password);
+      const match = await bcrypt.compare(password, user.username);
       if (match) {
         return done(null, user); // ログイン成功
       } else {
@@ -59,7 +59,7 @@ function setupServer() {
   );
 
   // 認証に成功した時にsessionにusernameを保存するための記述
-  passport.serializeUser((user, done) => done(null, user.hashed_password));
+  passport.serializeUser((user, done) => done(null, user.username));
   // sessionからusernameを取り出して検証するための記述
   passport.deserializeUser(async (username, done) => {
     const user = await userModel.find(username);

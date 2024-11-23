@@ -5,6 +5,7 @@ import { Field } from './components/ui/field';
 import { PasswordInput } from './components/ui/password-input';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import axios from 'axios';
 
 const Login = () => {
   const [isSignInMode, setIsSignInMode] = useState(false);
@@ -23,16 +24,28 @@ const Login = () => {
       username: data.username,
       password: data.password,
     };
-    let response = await fetch(`http://localhost:3000/${urlPath}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(loginUser),
-      credentials: 'include', // クッキーを含める
-    });
-    response = await response.json();
-    console.log('signup server response:  ', response);
+    // fetch version
+    // let response = await fetch(`http://localhost:3000/${urlPath}`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(loginUser),
+    //   credentials: 'include', // クッキーを含める
+    // });
+    // response = await response.json();
+
+    const response = await axios.post(
+      `http://localhost:3000/${urlPath}`,
+      loginUser,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          withCredentials: true,
+        },
+      }
+    );
+    console.log('signup server response:  ', response.data);
   });
 
   function handleSignInClick() {

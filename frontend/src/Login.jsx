@@ -5,7 +5,7 @@ import { Field } from './components/ui/field';
 import { PasswordInput } from './components/ui/password-input';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 const Login = () => {
   const [isSignInMode, setIsSignInMode] = useState(false);
@@ -33,8 +33,10 @@ const Login = () => {
       credentials: 'include', // クッキーを含める
     });
     response = await response.json();
+    console.log('signup server response:  ', response);
   });
 
+  // axios version
   //   const response = await axios.post(
   //     `http://localhost:3000/${urlPath}`,
   //     loginUser,

@@ -1,5 +1,5 @@
 import './App.css';
-import { Button, HStack } from '@chakra-ui/react';
+import { Route, Routes } from 'react-router-dom';
 import Login from './Login.jsx';
 import Header from './Header.jsx';
 import { UserList } from './UserList.jsx';
@@ -9,9 +9,11 @@ function App() {
   return (
     <>
       <Header />
-      <Login />
-      <UserList />
-      <NotFound />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/userlist" element={<UserList />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
   );
 }

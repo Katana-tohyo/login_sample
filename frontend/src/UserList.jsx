@@ -1,4 +1,5 @@
 import { Button, Table, Text, VStack } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 export const UserList = () => {
   return (
@@ -26,7 +27,7 @@ export const UserList = () => {
           ))}
         </Table.Body>
       </Table.Root>
-      <Button>Home</Button>
+      <Link to="/">Homeへ戻る</Link>
     </VStack>
   );
 };

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
@@ -24,19 +25,19 @@ function setupServer() {
   // セッション設定 express-session
   app.use(
     session({
-      secret: "secretKey",
+      secret: process.env.COOKIE_SECRET,
       resave: false,
       saveUninitialized: false,
+      cookie: {
+        maxAge: 24 * 60 * 60 * 1000, // 有効期限設定 1日
+        secure: process.env.NODE_ENV === "production", // true->httpsのみを許可、localはhttpなので切り替え
+        httpOnly: true, // javascriptからのアクセスを防ぐ
+      },
     }),
   );
   // passport session
   app.use(passport.initialize());
   app.use(passport.session());
-
-  app.use((req, res, next) => {
-    console.log("セッション情報:", req.session);
-    next();
-  });
 
   // LocalStrategy(ユーザー名・パスワードでの認証)の設定
   passport.use(

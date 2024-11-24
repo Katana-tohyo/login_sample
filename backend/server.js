@@ -30,7 +30,7 @@ function setupServer() {
       saveUninitialized: false,
       cookie: {
         maxAge: 24 * 60 * 60 * 1000, // 有効期限設定 1日
-        secure: process.env.NODE_ENV === "production", // true->httpsのみを許可、localはhttpなので切り替え
+        secure: process.env.NODE_ENV === "development", // true->httpsのみを許可、localはhttpなので切り替え
         httpOnly: true, // javascriptからのアクセスを防ぐ
       },
     }),
@@ -51,7 +51,7 @@ function setupServer() {
       // ハッシュ化したPWの突き合わせ。入力されたpasswordから、DBに保存されたハッシュ値を比較する
       const match = await bcrypt.compare(password, user.hashed_password);
       if (match) {
-        return done(null, user.username); // ログイン成功
+        return done(null, user); // ログイン成功
       } else {
         return done(null, false); // ログイン失敗
       }
@@ -59,7 +59,7 @@ function setupServer() {
   );
 
   // 認証に成功した時にsessionにusernameを保存するための記述
-  passport.serializeUser((user, done) => done(null, user.username));
+  passport.serializeUser((user, done) => done(null, user));
   // sessionからusernameを取り出して検証するための記述
   passport.deserializeUser(async (username, done) => {
     const user = await userModel.find(username);
@@ -86,12 +86,13 @@ function setupServer() {
     }
 
     // 最初に設定したLocalStrategy(ユーザー名とパスワードでの認証)を使ってログイン
-    passport.authenticate("local", (err, username) => {
-      if (!username) return res.status(401).json({ message: "ログイン失敗！" });
+    passport.authenticate("local", (err, user) => {
+      console.log("user: ", user);
+      if (!user) return res.status(401).json({ message: "ログイン失敗！" });
 
       // sessionにログイン情報を格納
-      req.logIn(username, () => {
-        return res.json({ message: `ログイン成功！ Hello, ${username}` });
+      req.logIn(user, () => {
+        return res.json({ message: `ログイン成功！ Hello, ${user.username}` });
       });
     })(req, res);
   });

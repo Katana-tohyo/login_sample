@@ -5,10 +5,12 @@ import { Field } from './components/ui/field';
 import { PasswordInput } from './components/ui/password-input';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 
 const Login = () => {
   const [isSignInMode, setIsSignInMode] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -32,8 +34,11 @@ const Login = () => {
       body: JSON.stringify(loginUser),
       credentials: 'include', // クッキーを含める
     });
-    response = await response.json();
-    console.log('signup server response:  ', response);
+    if (response.ok) {
+      response = await response.json();
+      console.log('server response: ', response);
+      navigate('/userlist');
+    }
   });
 
   // axios version

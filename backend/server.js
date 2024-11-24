@@ -66,6 +66,14 @@ function setupServer() {
     done(null, user);
   });
 
+  function checkAuth(req, res, next) {
+    if (req.isAuthenticated()) {
+      // isAuthenticated() 現在の認証状態を確認するメソッド
+      return next(); // 認証済みの場合、次のミドルウェアへ
+    }
+    res.status(401).json({ message: "ログインが必要です" });
+  }
+
   // ユーザー一覧取得エンドポイント
   // app.get("/users", (req, res) => {
   //   // sessionから情報を取得して認証
@@ -107,10 +115,9 @@ function setupServer() {
     });
   });
 
-  // ===========================================================
-
-  app.get("/api/users/:name", userController.index);
-  app.get("/api/users", userController.view);
+  // 認証されているかミドルウェアで判定（checkAuth）=================
+  app.get("/api/users/:name", checkAuth, userController.index);
+  app.get("/api/users", checkAuth, userController.view);
 
   return app;
 }

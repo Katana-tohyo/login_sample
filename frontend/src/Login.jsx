@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Heading, Input, VStack, Flex, Text } from '@chakra-ui/react';
+import { Button, Input, VStack, Flex, Text } from '@chakra-ui/react';
 import { Field } from './components/ui/field';
 import { PasswordInput } from './components/ui/password-input';
 import { useForm } from 'react-hook-form';

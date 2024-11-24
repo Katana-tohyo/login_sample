@@ -1,4 +1,4 @@
-import { Button, Text, VStack } from '@chakra-ui/react';
+import { Text, VStack } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 export const NotFound = () => {

@@ -1,4 +1,4 @@
-import { Button, Table, Text, VStack } from '@chakra-ui/react';
+import { Table, VStack } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 export const UserList = () => {

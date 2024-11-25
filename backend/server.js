@@ -30,7 +30,7 @@ function setupServer() {
       saveUninitialized: false,
       cookie: {
         maxAge: 24 * 60 * 60 * 1000, // 有効期限設定 1日
-        secure: process.env.NODE_ENV === "development", // true->httpsのみを許可、localはhttpなので切り替え
+        secure: false, // true->httpsのみを許可、localはhttpなので切り替え
         httpOnly: true, // javascriptからのアクセスを防ぐ
       },
     }),
@@ -60,7 +60,7 @@ function setupServer() {
 
   // 認証に成功した時にsessionにusernameを保存するための記述
   passport.serializeUser((user, done) => done(null, user));
-  // sessionからusernameを取り出して検証するための記述
+  // sessionからuserを取り出して検証するための記述
   passport.deserializeUser(async (username, done) => {
     const user = await userModel.find(username);
     done(null, user);
@@ -95,7 +95,6 @@ function setupServer() {
 
     // 最初に設定したLocalStrategy(ユーザー名とパスワードでの認証)を使ってログイン
     passport.authenticate("local", (err, user) => {
-      console.log("user: ", user);
       if (!user) return res.status(401).json({ message: "ログイン失敗！" });
 
       // sessionにログイン情報を格納
@@ -113,6 +112,14 @@ function setupServer() {
     req.logout(() => {
       res.json({ message: "ログアウト成功" });
     });
+  });
+
+  app.get("/api/auth_check", (req, res) => {
+    if (req.isAuthenticated()) {
+      res.json({ authenticated: true, user: req.user });
+    } else {
+      res.json({ authenticated: false });
+    }
   });
 
   // 認証されているかミドルウェアで判定（checkAuth）=================

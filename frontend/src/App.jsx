@@ -4,6 +4,7 @@ import Login from './Login.jsx';
 import Header from './Header.jsx';
 import { UserList } from './UserList.jsx';
 import { NotFound } from './NotFound.jsx';
+import ProtectedRoute from './ProtectedRoute.jsx';
 
 function App() {
   return (
@@ -11,7 +12,14 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/userlist" element={<UserList />} />
+        <Route
+          path="/userlist"
+          element={
+            <ProtectedRoute>
+              <UserList />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
